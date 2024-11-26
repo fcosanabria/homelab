@@ -14,5 +14,9 @@ spec:
     name: flux-system
   path: ./apps/homelab
   prune: true
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
 
 # In this new Kustomization manifest we are refering to that ./apps/homelab directories 
