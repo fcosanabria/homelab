@@ -3,3 +3,4 @@ kind: Kustomization
 namespace: beaverhabits
 resources:
   - ../../base/beaverhabits
+  - tunnel-credentials.yaml
