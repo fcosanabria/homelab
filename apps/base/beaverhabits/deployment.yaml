@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beaverhabits
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beaverhabits
+  template:
+    metadata:
+      labels:
+        app: beaverhabits
+    spec:
+      securityContext:
+        fsGroup: 65534 # nobody group
+      containers:
+        - name: beaverhabits
+          image: daya0576/beaverhabits:latest
+          securityContext:
+            runAsUser: 65534 # nobody user
+            runAsGroup: 65534 # nobody group
+          ports:
+            - containerPort: 8080
+          env:
+            - name: HABITS_STORAGE
+              value: "DATABASE"
+            - name: FIRST_DAY_OF_WEEK
+              value: "0"
+            - name: MAX_USER_COUNT
+              value: "1"
+          volumeMounts:
+            - name: data
+              persistentVolumeClaim:
+                claimName: beaverhabits-data
