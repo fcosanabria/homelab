@@ -21,7 +21,7 @@ spec:
             runAsUser: 65534 # nobody user
             runAsGroup: 65534 # nobody group
           ports:
-            - containerPort: 8080
+            - containerPort: 9210
           env:
             - name: HABITS_STORAGE
               value: "DATABASE"
