@@ -7,5 +7,4 @@ spec:
     app: beaverhabits
   type: ClusterIP
   ports:
-    - port: 80
-      targetPort: 8080
+    - port: 9210
