@@ -31,5 +31,8 @@ spec:
               value: "1"
           volumeMounts:
             - name: data
+              mountPath: /app/.user/
+          volumes:
+            - name: data
               persistentVolumeClaim:
                 claimName: beaverhabits-data
