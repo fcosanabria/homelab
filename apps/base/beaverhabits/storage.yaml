@@ -1,8 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: beaverhabits-data
-  namespace: beaverhabits
+  name: beaverhabits-data-pvc
 spec:
   accessModes:
     - ReadWriteOnce
