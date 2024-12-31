@@ -32,7 +32,7 @@ spec:
         enabled: true 
         ingressClassName: traefik 
         hosts:
-          - grafana.homelab.com
+          - grafana.fcosanabria.com
 
         ## TLS configuration for grafana Ingress
         ## Secret must be manually created in the namespace
