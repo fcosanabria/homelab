@@ -1,0 +1,64 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: homepage 
+  namespace: homepage
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: homepage 
+      version: "2.0.1"
+      sourceRef:
+        kind: HelmRepository
+        name: homepage 
+        namespace: homepage 
+      interval: 12h
+  install:
+    crds: Create
+  upgrade:
+    crds: CreateReplace
+  values:
+    enableRbac: true
+    serviceAccount:
+      create: true
+    
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        hosts:
+          - host: "homepage.fcosanabria.com"
+            paths:
+              - path: /
+                pathType: Prefix
+    
+    config:
+      kubernetes:
+        mode: cluster
+      bookmarks:
+        - Developer:
+            - Github:
+                - abbr: GH
+                  href: https://github.com/
+      services:
+        - My First Group:
+          - My First Service:
+              href: http://localhost/
+              description: Homepage is awesome
+      widgets:
+        - kubernetes:
+            cluster:
+              show: true
+              cpu: true
+              memory: true
+              showLabel: true
+              label: "cluster"
+            nodes:
+              show: true
+              cpu: true
+              memory: true
+              showLabel: true
+        - search:
+            provider: duckduckgo
+            target: _blank
