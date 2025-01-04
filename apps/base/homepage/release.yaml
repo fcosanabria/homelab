@@ -1,18 +1,18 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: homepage 
+  name: homepage
   namespace: homepage
 spec:
   interval: 30m
   chart:
     spec:
-      chart: homepage 
+      chart: homepage
       version: "2.0.1"
       sourceRef:
         kind: HelmRepository
-        name: homepage 
-        namespace: homepage 
+        name: homepage
+        namespace: homepage
       interval: 12h
   install:
     crds: Create
@@ -41,11 +41,43 @@ spec:
             - Github:
                 - abbr: GH
                   href: https://github.com/
-      services:
-        - My First Group:
-          - My First Service:
-              href: http://localhost/
-              description: Homepage is awesome
+        - Learning:
+            - Skool:
+                - abbr: SK
+                  href: https://www.skool.com
+            - O'Reilly:
+                - abbr: OR
+                  href: https://learning.oreilly.com
+        - Network:
+            - ISP Router:
+                href: http://192.168.1.1
+                description: Claro HG8245W5-6T
+            - Pi-hole:
+                href: http://192.168.31.68/admin/
+                description: Network-wide Ad Blocking
+            - Nginx Proxy Manager:
+                href: http://192.168.31.68:81/
+                description: Reverse Proxy Management
+        - Services:
+            - Syncthing:
+                href: https://sync.fcosanabria.com
+                description: File Synchronization
+            - Deluge:
+                href: https://deluge.fcosanabria.com
+                description: Torrent Client
+            - IT Tools:
+                href: https://tools.fcosanabria.com
+                description: Useful Developer Tools
+            - Paperless-NGX:
+                href: https://pln.fcosanabria.com
+                description: Document Management System
+        - Apps:
+            - Beaver Habits:
+                href: https://habits.fcosanabria.com
+                description: Habit Tracking
+            - Linkding:
+                href: https://ldstage.fcosanabria.com/bookmarks
+                description: Bookmark Management
       widgets:
         - kubernetes:
             cluster:
@@ -53,12 +85,12 @@ spec:
               cpu: true
               memory: true
               showLabel: true
-              label: "cluster"
-            nodes:
-              show: true
-              cpu: true
-              memory: true
-              showLabel: true
+              label: "Cluster"
+            # nodes: - Since I only have one node, I don't want to show it
+            #   show: true
+            #   cpu: true
+            #   memory: true
+            #   showLabel: true
         - search:
             provider: duckduckgo
             target: _blank
