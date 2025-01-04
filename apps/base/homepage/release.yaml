@@ -65,12 +65,6 @@ spec:
             - Last.fm:
                 - abbr: LF
                   href: https://www.last.fm/
-      # background:
-      #   image: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
-      #   # blur: sm
-      #   saturate: 50
-      #   brightness: 50
-      #   opacity: 50
       services: # services.yaml
         - Infrastructure:
             - ASUSTOR NAS:
@@ -105,6 +99,9 @@ spec:
             - Deluge:
                 href: https://deluge.fcosanabria.com
                 description: Torrent Client
+            - LazyLibrarian:
+                href: https://lazylibrarian.fcosanabria.com/authors
+                description: eBook Library Management
             - IT Tools:
                 href: https://tools.fcosanabria.com
                 description: Useful Developer Tools
@@ -118,22 +115,13 @@ spec:
             - Linkding:
                 href: https://ldstage.fcosanabria.com/bookmarks
                 description: Bookmark Management
-        - Calendar:
-            - widget:
-                type: calendar
-                firstDayInWeek: sunday # optional - defaults to monday
-                view: monthly # optional - possible values monthly, agenda
-                maxEvents: 10 # optional - defaults to 10
-                showTime: true # optional - show time for event happening today - defaults to false
-                timezone: America/Costa_Rica # optional and only when timezone is not detected properly (slightly slower performance) - force timezone for ical events (if it's the same - no change, if missing or different in ical - will be converted to this timezone)
-                # integrations: # optional
-                #   - type: ical # Show calendar events from another service
-                #     url: https://domain.url/with/link/to.ics # URL with calendar events
-                #     name: My Events # required - name for these calendar events
-                #     color: zinc # optional - defaults to pre-defined color for the service (zinc for ical)
-                #     params: # optional - additional params for the service
-                #       showName: true # optional - show name before event title in event line - defaults to false
-
+        - Media:
+            - Photo Gallery 3:
+                href: https://192.168.31.7:8004/apps/photogallery/#/timeline
+                description: ASUSTOR Photo Management
+            - SoundsGood:
+                href: https://192.168.31.7:8004/apps/soundsgood/
+                description: ASUSTOR Music Player
       widgets: # widgets.yaml
         - kubernetes:
             cluster:
