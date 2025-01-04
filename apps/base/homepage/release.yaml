@@ -115,6 +115,9 @@ spec:
             - Linkding:
                 href: https://ldstage.fcosanabria.com/bookmarks
                 description: Bookmark Management
+            - WHOOP:
+                href: https://app.whoop.com/
+                description: Fitness Tracker
         - Media:
             - Photo Gallery 3:
                 href: https://192.168.31.7:8004/apps/photogallery/#/timeline
