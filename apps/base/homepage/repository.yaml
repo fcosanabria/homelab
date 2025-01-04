@@ -5,4 +5,4 @@ metadata:
   namespace: homepage 
 spec:
   interval: 24h
-  url: https://prometheus-community.github.io/helm-charts 
+  url: http://jameswynn.github.io/helm-charts/
