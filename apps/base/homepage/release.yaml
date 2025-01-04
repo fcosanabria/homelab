@@ -48,7 +48,51 @@ spec:
             - O'Reilly:
                 - abbr: OR
                   href: https://learning.oreilly.com
+            - Udemy:
+                - abbr: UD
+                  href: https://www.udemy.com
+            - Roadmap.sh:
+                - abbr: RM
+                  href: https://roadmap.sh
+        - News:
+            - daily.dev:
+                - abbr: DD
+                  href: https://daily.dev/
+            - Hacker News:
+                - abbr: HN
+                  href: https://news.ycombinator.com/
+        - Entertaiment:
+            - Last.fm:
+                - abbr: LF
+                  href: https://www.last.fm/
+      background:
+        image: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
+        blur: sm
+        saturate: 50
+        brightness: 50
+        opacity: 50
+      quicklaunch:
+        provider: custom
+        url: https://www.kagi.org/search?q=
+        target: _blank
+      services:
+        - Infrastructure:
+            - ASUSTOR NAS:
+                href: https://asustor.fcosanabria.com
+                description: Network Attached Storage
+            - Portainer:
+                href: https://portainer.fcosanabria.com
+                description: Container Management
+            - Grafana:
+                href: http://grafana.fcosanabria.com
+                description: Metrics & Monitoring
+            - Homepage:
+                href: http://homepage.fcosanabria.com
+                description: Dashboard
         - Network:
+            - Xiomi Router:
+                href: http://192.168.31.1
+                description: AX9000 Main Router
             - ISP Router:
                 href: http://192.168.1.1
                 description: Claro HG8245W5-6T
