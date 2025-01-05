@@ -65,6 +65,9 @@ spec:
             - Last.fm:
                 - abbr: LF
                   href: https://www.last.fm/
+            - Hardcover:
+                - abbr: HC
+                  href: https://hardcover.app/home
       services: # services.yaml
         - Infrastructure:
             - ASUSTOR NAS:
