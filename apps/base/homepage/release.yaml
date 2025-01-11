@@ -58,6 +58,9 @@ spec:
             - daily.dev:
                 - abbr: DD
                   href: https://daily.dev/
+            - Devopscube:
+                - abbr: DC
+                  href: https://devopscube.com/
             - Hacker News:
                 - abbr: HN
                   href: https://news.ycombinator.com/
@@ -108,9 +111,9 @@ spec:
             - IT Tools:
                 href: https://tools.fcosanabria.com
                 description: Useful Developer Tools
-            - Paperless-NGX:
-                href: https://pln.fcosanabria.com
-                description: Document Management System
+#            - Paperless-NGX:
+#                href: https://pln.fcosanabria.com
+#                description: Document Management System
         - Apps:
             - Beaver Habits:
                 href: https://habits.fcosanabria.com
