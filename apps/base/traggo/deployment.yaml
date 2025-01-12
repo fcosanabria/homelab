@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traggo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traggo
+  template:
+    metadata:
+      labels:
+        app: traggo
+    spec:
+      containers:
+        - name: traggo
+          image: traggo/server:latest
+          ports:
+            - containerPort: 3030
+          envFrom:
+            - secretRef:
+              name: traggo-credentials
+          volumeMounts:
+            - name: traggo-storage
+              mountPath: /opt/traggo/data
+      volumes:
+        - name: traggo-storage
+          persistentVolumeClaim:
+            claimName: traggo-data-pvc
