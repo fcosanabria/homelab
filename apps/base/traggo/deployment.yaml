@@ -19,7 +19,7 @@ spec:
             - containerPort: 3030
           envFrom:
             - secretRef:
-              name: traggo-credentials
+                name: traggo-credentials
           volumeMounts:
             - name: traggo-storage
               mountPath: /opt/traggo/data

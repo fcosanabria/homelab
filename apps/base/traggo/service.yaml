@@ -4,7 +4,7 @@ metadata:
   name: traggo
 spec:
   selector:
-    app: linkding
+    app: traggo 
   type: ClusterIP
   ports:
   - port: 3030
