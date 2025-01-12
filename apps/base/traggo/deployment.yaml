@@ -17,6 +17,13 @@ spec:
           image: traggo/server:latest
           ports:
             - containerPort: 3030
+          env:
+          - name: TRAGGO_PORT
+            value: "3030"
+          - name: TRAGGO_LOG_LEVEL
+            value: "info"
+          - name: TRAGGO_DATABASE_DIALECT
+            value: "/opt/traggo/data/traggo.db"
           envFrom:
             - secretRef:
                 name: traggo-credentials
