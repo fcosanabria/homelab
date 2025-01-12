@@ -23,6 +23,8 @@ spec:
           - name: TRAGGO_LOG_LEVEL
             value: "info"
           - name: TRAGGO_DATABASE_DIALECT
+            value: "sqlite3"
+          - name: TRAGGO_DATABASE_CONNECTION
             value: "/opt/traggo/data/traggo.db"
           envFrom:
             - secretRef:
