@@ -11,7 +11,7 @@ spec:
       version: "0.8.2"
       sourceRef:
         kind: HelmRepository
-        name: firefly-iii-stack
+        name: firefly-iii
         namespace: firefly-iii
       interval: 12h
   install:
@@ -33,7 +33,7 @@ spec:
         RESTORE_URL: ""
         BACKUP_URL: ""
         PGPASSWORD: "YOURDBPASSWORD"
-        DBHOST: firefly-firefly-db
+        DBHOST: firefly-iii-stack-firefly-db
         DBPORT: "5432"
         DBNAME: firefly
         DBUSER: firefly
