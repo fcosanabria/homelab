@@ -11,7 +11,7 @@ spec:
       version: "0.8.2"
       sourceRef:
         kind: HelmRepository
-        name: firefly-iii
+        name: firefly-iii-stack
         namespace: firefly-iii
       interval: 12h
   install:
@@ -19,15 +19,6 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
-    ingress:
-      main:
-        enabled: true
-        ingressClassName: "traefik"
-        hosts:
-          - host: "firefly.fcosanabria.com"
-            paths:
-              - path: /
-                pathType: Prefix
     firefly-db:
       enabled: true
       image:
