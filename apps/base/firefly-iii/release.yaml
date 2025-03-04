@@ -26,8 +26,9 @@ spec:
         tag: 10-alpine
         pullPolicy: IfNotPresent
       storage:
-        class: ~
-        accessModes: ~  # Change as needed for your storageClass https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes
+        class: local-path
+        accessModes:
+          - ReadWriteOnce
         dataSize: 1Gi
       configs:
         RESTORE_URL: ""
