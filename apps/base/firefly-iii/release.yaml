@@ -1,0 +1,54 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: firefly-iii-stack
+  namespace: firefly-iii
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: firefly-iii-stack
+      version: "0.8.2"
+      sourceRef:
+        kind: HelmRepository
+        name: firefly-iii
+        namespace: firefly-iii
+      interval: 12h
+  install:
+    crds: Create
+  upgrade:
+    crds: CreateReplace
+  values:
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        hosts:
+          - host: "firefly.fcosanabria.com"
+            paths:
+              - path: /
+                pathType: Prefix
+    firefly-db:
+      enabled: true
+      image:
+        repository: postgres
+        tag: 10-alpine
+        pullPolicy: IfNotPresent
+      storage:
+        class: ~
+        accessModes: ~  # Change as needed for your storageClass https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes
+        dataSize: 1Gi
+      configs:
+        RESTORE_URL: ""
+        BACKUP_URL: ""
+        PGPASSWORD: "YOURDBPASSWORD"
+        DBHOST: firefly-firefly-db
+        DBPORT: "5432"
+        DBNAME: firefly
+        DBUSER: firefly
+        TZ: America/Costa_Rica
+      backupSchedule: "0 3 * * *"
+  firefly-iii:
+    enabled: true
+  importer:
+    enabled: true
