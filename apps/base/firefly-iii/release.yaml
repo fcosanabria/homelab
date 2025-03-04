@@ -48,7 +48,7 @@ spec:
         DBUSER: firefly
         TZ: America/Costa_Rica
       backupSchedule: "0 3 * * *"
-  firefly-iii:
-    enabled: true
-  importer:
-    enabled: true
+    firefly-iii:
+      enabled: true
+    importer:
+      enabled: true
