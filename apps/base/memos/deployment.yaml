@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memos
+  namespace: memos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memos
+  template:
+    metadata:
+      labels:
+        app: memos
+    spec:
+      containers:
+      - name: memos
+        image: neosmemo/memos:stable
+        ports:
+        - containerPort: 5230
+        env:
+        - name: MEMOS_DRIVER
+          value: "postgres"
+        - name: MEMOS_DSN
+          value: "user=memos password=secret dbname=memosdb host=db sslmode=disable"
+      - name: db
+        image: postgres:16.1
+        env:
+        - name: POSTGRES_USER
+          value: "memos"
+        - name: POSTGRES_PASSWORD
+          value: "secret"
+        - name: POSTGRES_DB
+          value: "memosdb"      
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data/
+          name: db-storage
+      volumes:
+      - name: db-storage
+        persistentVolumeClaim:
+          claimName: db-pvc
