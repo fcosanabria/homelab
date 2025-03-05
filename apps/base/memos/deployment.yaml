@@ -34,7 +34,7 @@ spec:
         - name: MEMOS_DRIVER
           value: "postgres"
         - name: MEMOS_DSN
-          value: "user=memos password=secret dbname=memosdb host=db sslmode=disable"
+          value: "postgresql://memos:secret@db:5432/memosdb?sslmode=disable"
       - name: db
         image: postgres:16.1
         env:
