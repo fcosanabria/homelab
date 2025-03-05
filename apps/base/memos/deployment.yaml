@@ -13,12 +13,24 @@ spec:
       labels:
         app: memos
     spec:
+      initContainers:
+      - name: wait-for-db
+        image: busybox
+        command: ['sh', '-c', 'until nc -z db 5432; do echo "Waiting for database..."; sleep 2; done;']
       containers:
       - name: memos
         image: neosmemo/memos:stable
         ports:
         - containerPort: 5230
         env:
+        - name: MEMOS_MODE
+          value: "prod"
+        - name: MEMOS_ADDR
+          value: "0.0.0.0"
+        - name: MEMOS_PORT
+          value: "5230"
+        - name: MEMOS_DATA
+          value: "/var/opt/memos"
         - name: MEMOS_DRIVER
           value: "postgres"
         - name: MEMOS_DSN
@@ -31,7 +43,7 @@ spec:
         - name: POSTGRES_PASSWORD
           value: "secret"
         - name: POSTGRES_DB
-          value: "memosdb"      
+          value: "memosdb"
         volumeMounts:
         - mountPath: /var/lib/postgresql/data/
           name: db-storage
