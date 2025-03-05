@@ -13,10 +13,10 @@ spec:
       labels:
         app: memos
     spec:
-      initContainers:
-      - name: wait-for-db
-        image: busybox
-        command: ['sh', '-c', 'until nc -z db 5432; do echo "Waiting for database..."; sleep 2; done;']
+      # initContainers:
+      # - name: wait-for-db
+      #   image: busybox
+      #   command: ['sh', '-c', 'until nc -z db 5432; do echo "Waiting for database..."; sleep 2; done;']
       containers:
       - name: memos
         image: neosmemo/memos:stable
