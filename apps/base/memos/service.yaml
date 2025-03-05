@@ -10,15 +10,3 @@ spec:
     targetPort: 5230
   selector:
     app: memos
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: db
-  namespace: memos
-spec:
-  ports:
-  - port: 5432
-    targetPort: 5432
-  selector:
-    app: memos
