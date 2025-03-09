@@ -4,9 +4,9 @@ metadata:
   name: memos
   namespace: memos
 spec:
-  type: NodePort
-  ports:
-  - port: 5230
-    targetPort: 5230
   selector:
     app: memos
+  ports:
+  - port: 80
+    targetPort: 5230
+  type: ClusterIP

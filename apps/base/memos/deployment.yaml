@@ -18,19 +18,20 @@ spec:
         image: neosmemo/memos:stable
         ports:
         - containerPort: 5230
-        env:
-        - name: MEMOS_MODE
-          value: "prod"
-        - name: MEMOS_ADDR
-          value: "0.0.0.0"
-        - name: MEMOS_PORT
-          value: "5230"
-        - name: MEMOS_DATA
-          value: "/var/opt/memos"
-      volumeMounts:
-      - mountPath: /var/opt/memos
-        name: memos-storage
+        envFrom:
+        - configMapRef:
+            name: memos-config
+        volumeMounts:
+        - name: memos-data
+          mountPath: /var/opt/memos
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
       volumes:
-      - name: memos-storage
+      - name: memos-data
         persistentVolumeClaim:
           claimName: memos-pvc
