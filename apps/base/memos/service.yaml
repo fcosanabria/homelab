@@ -7,6 +7,5 @@ spec:
   selector:
     app: memos
   ports:
-  - port: 80
-    targetPort: 5230
+  - port: 5230
   type: ClusterIP
