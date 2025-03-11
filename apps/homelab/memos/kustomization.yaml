@@ -3,5 +3,5 @@ kind: Kustomization
 namespace: memos
 resources:
   - ../../base/memos/
-  # - cloudflare.yaml
-  # - tunnel-credentials.yaml
+  - cloudflare.yaml
+  - tunnel-credentials.yaml
