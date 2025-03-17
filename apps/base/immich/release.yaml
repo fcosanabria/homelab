@@ -39,7 +39,7 @@ spec:
           # size: 20Gi # Specify the size of the volume
       configuration: {}
     postgresql:
-      enabled: false
+      enabled: true
       image:
         repository: tensorchord/pgvecto-rs
         tag: pg14-v0.2.0
@@ -59,7 +59,7 @@ spec:
               CREATE EXTENSION earthdistance;
               CREATE EXTENSION vectors;
     redis:
-      enabled: false
+      enabled: true
       architecture: standalone
       auth:
         enabled: false
@@ -72,12 +72,15 @@ spec:
         main:
           enabled: false
           annotations:
-            nginx.ingress.kubernetes.io/proxy-body-size: "0"
+            traefik.ingress.kubernetes.io/router.entrypoints: websecure
+            traefik.ingress.kubernetes.io/router.tls: "true"
           hosts:
-            - host: immich.local
+            - host: immich.fcosanabria.com
               paths:
                 - path: "/"
-          tls: []
+                  pathType: Prefix
+          tls:
+            - secretName: immich-tls
     machine-learning:
       enabled: true
       image:
