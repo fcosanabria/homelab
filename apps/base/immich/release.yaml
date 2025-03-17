@@ -33,10 +33,10 @@ spec:
         enabled: false
       persistence:
         library:
-          #existingClaim:  # Remove existingClaim since we will use storageClass
-          storageClass: nfs-csi # Specify the storage class
+          existingClaim: immich-pvc # Remove existingClaim since we will use storageClass
+          # storageClass: nfs-csi # Specify the storage class
           accessMode: ReadWriteMany # Specify Access Mode
-          size: 20Gi # Specify the size of the volume
+          # size: 20Gi # Specify the size of the volume
       configuration: {}
     postgresql:
       enabled: false
