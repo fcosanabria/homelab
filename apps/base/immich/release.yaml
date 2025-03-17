@@ -21,10 +21,10 @@ spec:
   values:
     env:
       REDIS_HOSTNAME: '{{ printf "%s-redis-master" .Release.Name }}'
-      DB_HOSTNAME: "{{ .Release.Name }}-postgresql"
-      DB_USERNAME: "{{ .Values.postgresql.global.postgresql.auth.username }}"
-      DB_DATABASE_NAME: "{{ .Values.postgresql.global.postgresql.auth.database }}"
-      DB_PASSWORD: "{{ .Values.postgresql.global.postgresql.auth.password }}"
+      DB_HOSTNAME: "immich-postgres-postgresql.immich.svc.cluster.local" # Update DB_HOSTNAME
+      DB_USERNAME: "postgres" # Update DB_USERNAME
+      DB_DATABASE_NAME: "postgres" # Update DB_DATABASE_NAME
+      DB_PASSWORD: <POSTGRES_PASSWORD> # Update DB_PASSWORD
       IMMICH_MACHINE_LEARNING_URL: '{{ printf "http://%s-machine-learning:3003" .Release.Name }}'
     image:
       tag: v1.119.0
@@ -39,25 +39,7 @@ spec:
           # size: 20Gi # Specify the size of the volume
       configuration: {}
     postgresql:
-      enabled: true
-      image:
-        repository: tensorchord/pgvecto-rs
-        tag: pg14-v0.2.0
-      global:
-        postgresql:
-          auth:
-            username: immich
-            database: immich
-            password: immich
-      primary:
-        containerSecurityContext:
-          readOnlyRootFilesystem: false
-        initdb:
-          scripts:
-            create-extensions.sql: |
-              CREATE EXTENSION cube;
-              CREATE EXTENSION earthdistance;
-              CREATE EXTENSION vectors;
+      enabled: false # IMPORTANT: Disable the postgresql subchart
     redis:
       enabled: true
       architecture: standalone
@@ -78,9 +60,8 @@ spec:
             - host: immich.fcosanabria.com
               paths:
                 - path: "/"
-                  pathType: Prefix
-          tls:
-            - secretName: immich-tls
+      tls:
+        - secretName: immich-tls
     machine-learning:
       enabled: true
       image:
