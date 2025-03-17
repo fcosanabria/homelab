@@ -1,0 +1,93 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: immich
+  namespace: immich
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: immich
+      version: "0.9.1" # version from chart.yaml
+      sourceRef:
+        kind: HelmRepository
+        name: immich
+        namespace: immich
+      interval: 12h
+  install:
+    crds: Create
+  upgrade:
+    crds: CreateReplace
+  values:
+    env:
+      REDIS_HOSTNAME: '{{ printf "%s-redis-master" .Release.Name }}'
+      DB_HOSTNAME: "{{ .Release.Name }}-postgresql"
+      DB_USERNAME: "{{ .Values.postgresql.global.postgresql.auth.username }}"
+      DB_DATABASE_NAME: "{{ .Values.postgresql.global.postgresql.auth.database }}"
+      DB_PASSWORD: "{{ .Values.postgresql.global.postgresql.auth.password }}"
+      IMMICH_MACHINE_LEARNING_URL: '{{ printf "http://%s-machine-learning:3003" .Release.Name }}'
+    image:
+      tag: v1.119.0
+    immich:
+      metrics:
+        enabled: false
+      persistence:
+        library:
+          #existingClaim:  # Remove existingClaim since we will use storageClass
+          storageClass: nfs-csi # Specify the storage class
+          accessMode: ReadWriteMany # Specify Access Mode
+          size: 20Gi # Specify the size of the volume
+      configuration: {}
+    postgresql:
+      enabled: false
+      image:
+        repository: tensorchord/pgvecto-rs
+        tag: pg14-v0.2.0
+      global:
+        postgresql:
+          auth:
+            username: immich
+            database: immich
+            password: immich
+      primary:
+        containerSecurityContext:
+          readOnlyRootFilesystem: false
+        initdb:
+          scripts:
+            create-extensions.sql: |
+              CREATE EXTENSION cube;
+              CREATE EXTENSION earthdistance;
+              CREATE EXTENSION vectors;
+    redis:
+      enabled: false
+      architecture: standalone
+      auth:
+        enabled: false
+    server:
+      enabled: true
+      image:
+        repository: ghcr.io/immich-app/immich-server
+        pullPolicy: IfNotPresent
+      ingress:
+        main:
+          enabled: false
+          annotations:
+            nginx.ingress.kubernetes.io/proxy-body-size: "0"
+          hosts:
+            - host: immich.local
+              paths:
+                - path: "/"
+          tls: []
+    machine-learning:
+      enabled: true
+      image:
+        repository: ghcr.io/immich-app/immich-machine-learning
+        pullPolicy: IfNotPresent
+      env:
+        TRANSFORMERS_CACHE: /cache
+      persistence:
+        cache:
+          enabled: true
+          size: 5Gi
+          type: emptyDir
+          accessMode: ReadWriteMany
