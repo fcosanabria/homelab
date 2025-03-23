@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: immich
-      version: "0.9.1" # version from chart.yaml
+      version: "0.9.1"
       sourceRef:
         kind: HelmRepository
         name: immich
@@ -21,10 +21,10 @@ spec:
   values:
     env:
       REDIS_HOSTNAME: '{{ printf "%s-redis-master" .Release.Name }}'
-      DB_HOSTNAME: "immich-postgres-postgresql.immich.svc.cluster.local" # Update DB_HOSTNAME
-      DB_USERNAME: "postgres" # Update DB_USERNAME
-      DB_DATABASE_NAME: "postgres" # Update DB_DATABASE_NAME
-      DB_PASSWORD: password # Update DB_PASSWORD
+      DB_HOSTNAME: '{{ printf "%s-postgresql" .Release.Name }}' # Updated to reference deployed PostgreSQL
+      DB_USERNAME: "postgres"
+      DB_DATABASE_NAME: "immich"
+      DB_PASSWORD: password
       IMMICH_MACHINE_LEARNING_URL: '{{ printf "http://%s-machine-learning:3003" .Release.Name }}'
     
     image:
@@ -35,10 +35,8 @@ spec:
         enabled: false
       persistence:
         library:
-          existingClaim: immich-pvc # Remove existingClaim since we will use storageClass
-          # storageClass: nfs-csi # Specify the storage class
-          accessMode: ReadWriteMany # Specify Access Mode
-          # size: 20Gi # Specify the size of the volume
+          existingClaim: immich-pvc
+          accessMode: ReadWriteMany
       configuration: {}
 
     redis:
@@ -46,6 +44,19 @@ spec:
       architecture: standalone
       auth:
         enabled: false
+
+    postgresql:
+      enabled: true
+      auth:
+        username: postgres
+        password: password
+        database: immich
+      primary:
+        persistence:
+          enabled: true
+          storageClass: nfs-csi
+          size: 10Gi
+          accessMode: ReadWriteMany
 
     server:
       enabled: true
