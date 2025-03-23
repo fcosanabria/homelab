@@ -24,10 +24,12 @@ spec:
       DB_HOSTNAME: "immich-postgres-postgresql.immich.svc.cluster.local" # Update DB_HOSTNAME
       DB_USERNAME: "postgres" # Update DB_USERNAME
       DB_DATABASE_NAME: "postgres" # Update DB_DATABASE_NAME
-      DB_PASSWORD: <POSTGRES_PASSWORD> # Update DB_PASSWORD
+      DB_PASSWORD: password # Update DB_PASSWORD
       IMMICH_MACHINE_LEARNING_URL: '{{ printf "http://%s-machine-learning:3003" .Release.Name }}'
+    
     image:
       tag: v1.119.0
+
     immich:
       metrics:
         enabled: false
@@ -38,30 +40,19 @@ spec:
           accessMode: ReadWriteMany # Specify Access Mode
           # size: 20Gi # Specify the size of the volume
       configuration: {}
-    postgresql:
-      enabled: false # IMPORTANT: Disable the postgresql subchart
+
     redis:
       enabled: true
       architecture: standalone
       auth:
         enabled: false
+
     server:
       enabled: true
       image:
         repository: ghcr.io/immich-app/immich-server
         pullPolicy: IfNotPresent
-      ingress:
-        main:
-          enabled: false
-          annotations:
-            traefik.ingress.kubernetes.io/router.entrypoints: websecure
-            traefik.ingress.kubernetes.io/router.tls: "true"
-          hosts:
-            - host: immich.fcosanabria.com
-              paths:
-                - path: "/"
-      tls:
-        - secretName: immich-tls
+
     machine-learning:
       enabled: true
       image:
