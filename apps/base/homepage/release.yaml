@@ -112,7 +112,7 @@ spec:
                 href: https://tools.fcosanabria.com
                 description: Useful Developer Tools
             - Paperless-NGX:
-                href: http://http://192.168.31.7:25680
+                href: http://192.168.31.7:25680
                 description: Document Management System
         - Apps:
             - Beaver Habits:
