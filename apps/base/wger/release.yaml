@@ -1,0 +1,84 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: wger
+  namespace: wger
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: wger
+      version: "0.2.4"
+      sourceRef:
+        kind: HelmRepository
+        name: wger
+        namespace: wger
+      interval: 12h
+  install:
+    createNamespace: false
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    app:
+      timezone: "America/Costa_Rica"
+      global:
+        replicas: 1
+      # No reverse proxy in pod; Cloudflare Tunnel will front the ingress
+      nginx:
+        enabled: false
+      # No mail configuration required
+      mail:
+        enabled: false
+      # Persist media/static/celery-beat so upgrades don't lose data
+      # Use pre-created PVCs without specifying a storage class
+      persistence:
+        enabled: true
+        existingClaim:
+          enabled: true
+          media: wger-media
+          static: wger-static
+          celeryBeat: wger-celery-beat
+
+    # Enable ingress so Traefik exposes the service; Cloudflare Tunnel will route to it
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      # Replace with your desired public DNS; Cloudflare Tunnel will map this host
+      url: fit.fcosanabria.com
+      tls: false
+      annotations: {}
+
+    # Internal service
+    service:
+      type: ClusterIP
+      port: 8000
+
+  # Postgres (groundhog2k) minimal viable settings and persistent storage on NFS
+  postgres:
+    enabled: true
+    settings:
+      superuser:
+        value: postgres
+      superuserPassword:
+        value: postgres
+    userDatabase:
+      name:
+        value: wger
+      user:
+        value: wger
+      password:
+        value: wger
+    extraScripts: wger-pg-init
+    service:
+      port: 5432
+    storage:
+      persistentVolumeClaimName: wger-db
+
+    # Redis with persistence on NFS (no auth for simplicity; can be enabled later)
+    redis:
+      enabled: true
+      storage:
+        persistentVolumeClaimName: wger-redis
+      service:
+        serverPort: 6379
