@@ -53,29 +53,28 @@ spec:
     service:
       type: ClusterIP
       port: 8000
+    # Postgres (groundhog2k) with pre-created PVC
+    postgres:
+      enabled: true
+      settings:
+        superuser:
+          value: postgres
+        superuserPassword:
+          value: postgres
+      userDatabase:
+        name:
+          value: wger
+        user:
+          value: wger
+        password:
+          value: wger
+      extraScripts: wger-pg-init
+      service:
+        port: 5432
+      storage:
+        persistentVolumeClaimName: wger-db
 
-  # Postgres (groundhog2k) minimal viable settings and persistent storage on NFS
-  postgres:
-    enabled: true
-    settings:
-      superuser:
-        value: postgres
-      superuserPassword:
-        value: postgres
-    userDatabase:
-      name:
-        value: wger
-      user:
-        value: wger
-      password:
-        value: wger
-    extraScripts: wger-pg-init
-    service:
-      port: 5432
-    storage:
-      persistentVolumeClaimName: wger-db
-
-    # Redis with persistence on NFS (no auth for simplicity; can be enabled later)
+    # Redis with pre-created PVC (no auth for now)
     redis:
       enabled: true
       storage:
