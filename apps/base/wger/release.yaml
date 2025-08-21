@@ -19,6 +19,10 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  valuesFrom:
+    - kind: Secret
+      name: wger-values
+      valuesKey: values.yaml
   values:
     app:
       timezone: "America/Costa_Rica"
@@ -30,6 +34,15 @@ spec:
       # No mail configuration required
       mail:
         enabled: false
+      # External secrets for Django and JWT
+      django:
+        secret:
+          name: django
+          key: SECRET_KEY
+      jwt:
+        secret:
+          name: jwt
+          key: JWT_SECRET
       # Persist media/static/celery-beat so upgrades don't lose data
       # Use pre-created PVCs without specifying a storage class
       persistence:
@@ -54,19 +67,15 @@ spec:
       type: ClusterIP
       port: 8000
     # Postgres (groundhog2k) with pre-created PVC
-    postgres:
+  postgres:
       enabled: true
       settings:
         superuser:
-          value: postgres
-        superuserPassword:
           value: postgres
       userDatabase:
         name:
           value: wger
         user:
-          value: wger
-        password:
           value: wger
       extraScripts: wger-pg-init
       service:
