@@ -24,6 +24,25 @@ spec:
       timezone: "America/Costa_Rica"
       global:
         replicas: 1
+      # Auto-create Django admin user via env
+      environment:
+        - name: WGER_CREATE_SUPERUSER
+          value: "true"
+        - name: WGER_ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: wger-admin
+              key: username
+        - name: WGER_ADMIN_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: wger-admin
+              key: email
+        - name: WGER_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wger-admin
+              key: password
       # No reverse proxy in pod; Cloudflare Tunnel will front the ingress
       nginx:
         enabled: false
@@ -44,7 +63,6 @@ spec:
     ingress:
       enabled: true
       ingressClassName: traefik
-      # Replace with your desired public DNS; Cloudflare Tunnel will map this host
       url: fit.fcosanabria.com
       tls: false
       annotations: {}
