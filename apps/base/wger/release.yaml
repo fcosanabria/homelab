@@ -60,14 +60,16 @@ spec:
         superuser:
           value: postgres
         superuserPassword:
-          value: postgres
+          existingSecret: wger-postgres-secrets
+          existingSecretKey: POSTGRES_SUPERUSER_PASSWORD
       userDatabase:
         name:
           value: wger
         user:
           value: wger
         password:
-          value: wger
+          existingSecret: wger-postgres-secrets
+          existingSecretKey: POSTGRES_USER_PASSWORD
       extraScripts: wger-pg-init
       service:
         port: 5432
