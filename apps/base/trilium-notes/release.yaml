@@ -1,0 +1,54 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: trilium-notes
+  namespace: trilium-notes
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: trilium
+      version: "1.3.0"
+      sourceRef:
+        kind: HelmRepository
+        name: trilium-notes
+        namespace: trilium-notes
+      interval: 48h
+  install:
+    createNamespace: false
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      main:
+        containers:
+          trilium:
+            image:
+              repository: triliumnext/notes
+              tag: v0.92.4
+              pullPolicy: IfNotPresent
+
+    persistence:
+      data:
+        enabled: true
+        type: persistentVolumeClaim
+        existingClaim: trilium-notes-data-pvc
+
+    configini:
+      general:
+        instanceName: "Trilium Notes"
+        noAuthentication: false
+        noBackup: false
+      network:
+        host: "0.0.0.0"
+        port: 8080
+        https: false
+        trustedReverseProxy: false
+
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 8080
