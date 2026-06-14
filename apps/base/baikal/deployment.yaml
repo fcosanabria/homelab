@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baikal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: baikal
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: baikal
+    spec:
+      # Baikal's entrypoint runs a chown script to fix file permissions on the
+      # mounted volumes, so the container needs to start as root (default).
+      # Set BAIKAL_SKIP_CHOWN if you ever switch to a non-root securityContext.
+      containers:
+        - name: baikal
+          image: ckulka/baikal:0.10.1-nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: baikal-config
+              mountPath: /var/www/baikal/config
+            - name: baikal-data
+              mountPath: /var/www/baikal/Specific
+      volumes:
+        - name: baikal-config
+          persistentVolumeClaim:
+            claimName: baikal-config-pvc
+        - name: baikal-data
+          persistentVolumeClaim:
+            claimName: baikal-data-pvc
