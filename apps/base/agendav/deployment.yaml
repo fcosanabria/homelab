@@ -18,8 +18,8 @@ spec:
           ports:
             - containerPort: 8080
           envFrom:
-            - secretRef:
-                name: agendav-secrets
+            - configMapRef:
+                name: agendav-config
           readinessProbe:
             httpGet:
               path: /

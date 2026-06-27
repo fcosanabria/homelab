@@ -3,6 +3,6 @@ kind: Kustomization
 namespace: agendav
 resources:
   - ../../base/agendav/
-  - secrets.yaml
+  - configmap.yaml
   - cloudflare.yaml
   - tunnel-credentials.yaml

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agendav-config
+data:
+  AGENDAV_SERVER_NAME: agendav.fcosanabria.com
+  AGENDAV_TITLE: AgenDAV
+  AGENDAV_FOOTER: Hosted in fcosanabria Homelab
+  AGENDAV_CALDAV_SERVER: http://baikal.baikal.svc.cluster.local/cal.php
+  AGENDAV_CALDAV_PUBLIC_URL: https://calendar.fcosanabria.com
+  AGENDAV_TIMEZONE: America/Costa_Rica
+  AGENDAV_LANG: en
+  AGENDAV_LOG_DIR: /tmp/
+  AGENDAV_WEEKSTART: "1"
