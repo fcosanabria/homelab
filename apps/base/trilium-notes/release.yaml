@@ -29,9 +29,6 @@ spec:
               repository: triliumnext/trilium
               tag: v0.104.0
               pullPolicy: IfNotPresent
-            env:
-              TRILIUM_GENERAL_INSTANCENAME: "Trilium Notes"
-              TRILIUM_NETWORK_TRUSTEDREVERSEPROXY: "true"
 
     persistence:
       data:
