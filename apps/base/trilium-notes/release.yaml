@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: trilium
-      version: "1.3.0"
+      version: "2.0.0"
       sourceRef:
         kind: HelmRepository
         name: trilium-notes
@@ -17,6 +17,7 @@ spec:
   install:
     createNamespace: false
   upgrade:
+    force: true
     remediation:
       retries: 3
   values:
@@ -25,14 +26,18 @@ spec:
         containers:
           trilium:
             image:
-              repository: triliumnext/notes
-              tag: v0.92.4
+              repository: triliumnext/trilium
+              tag: v0.104.0
               pullPolicy: IfNotPresent
+            env:
+              TRILIUM_GENERAL_INSTANCENAME: "Trilium Notes"
+              TRILIUM_NETWORK_TRUSTEDREVERSEPROXY: "true"
 
     persistence:
       data:
         enabled: true
         type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
         existingClaim: trilium-notes-data-pvc
 
     configini:
@@ -44,7 +49,7 @@ spec:
         host: "0.0.0.0"
         port: 8080
         https: false
-        trustedReverseProxy: false
+        trustedReverseProxy: true
 
     service:
       main:

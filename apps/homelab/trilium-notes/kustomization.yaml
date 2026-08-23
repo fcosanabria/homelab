@@ -3,3 +3,5 @@ kind: Kustomization
 namespace: trilium-notes
 resources:
   - ../../base/trilium-notes/
+  - cloudflare.yaml
+  - tunnel-credentials.yaml
