@@ -57,5 +57,5 @@ data:
     no-autoupdate: true
     ingress:
     - hostname: tududi.fcosanabria.com
-      service: http://tududi:8080
+      service: http://tududi:3002
     - service: http_status:404
