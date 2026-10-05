@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tududi
+  labels:
+    app: tududi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tududi
+  template:
+    metadata:
+      labels:
+        app: tududi
+    spec:
+      containers:
+        - name: tududi
+          image: chrisvel/tududi:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3002
+              protocol: TCP
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: TUDUDI_ALLOWED_ORIGINS
+              value: "https://tududi.fcosanabria.com"
+            - name: TUDUDI_TRUST_PROXY
+              value: "true"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          envFrom:
+            - secretRef:
+                name: tududi-credentials
+          volumeMounts:
+            - name: tududi-db
+              mountPath: /app/db
+            - name: tududi-uploads
+              mountPath: /app/uploads
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3002
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3002
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      volumes:
+        - name: tududi-db
+          persistentVolumeClaim:
+            claimName: tududi-db-pvc
+        - name: tududi-uploads
+          persistentVolumeClaim:
+            claimName: tududi-uploads-pvc
