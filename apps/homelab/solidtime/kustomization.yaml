@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: solidtime
+resources:
+  - ../../base/solidtime/
+  - credentials.yaml
+  - cloudflare.yaml
+  # Descomentar una vez creado y encriptado tunnel-credentials.yaml:
+  # - tunnel-credentials.yaml

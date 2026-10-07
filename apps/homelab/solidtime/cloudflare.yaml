@@ -51,11 +51,11 @@ metadata:
   name: cloudflared
 data:
   config.yaml: |
-    tunnel: tududi
+    tunnel: solidtime
     credentials-file: /etc/cloudflared/creds/credentials.json
     metrics: 0.0.0.0:2000
     no-autoupdate: true
     ingress:
-    - hostname: tududi.fcosanabria.com
-      service: http://tududi:3002
-    - service: http_status:404
+      - hostname: solidtime.fcosanabria.com
+        service: http://solidtime:8000
+      - service: http_status:404

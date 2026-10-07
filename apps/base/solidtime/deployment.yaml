@@ -1,0 +1,155 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: solidtime
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: solidtime
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: solidtime
+    spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+        - name: solidtime
+          image: solidtime/solidtime:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: APP_NAME
+              value: "solidtime"
+            - name: VITE_APP_NAME
+              value: "solidtime"
+            - name: APP_ENV
+              value: "production"
+            - name: APP_DEBUG
+              value: "false"
+            - name: APP_URL
+              value: "https://solidtime.fcosanabria.com"
+            - name: APP_FORCE_HTTPS
+              value: "true"
+            - name: TRUSTED_PROXIES
+              value: "0.0.0.0/0,2000:0:0:0:0:0:0:0/3"
+            - name: CONTAINER_MODE
+              value: "http"
+            - name: AUTO_DB_MIGRATE
+              value: "true"
+            - name: APP_ENABLE_REGISTRATION
+              value: "on"
+            - name: MAIL_MAILER
+              value: "log"
+            - name: QUEUE_CONNECTION
+              value: "sync"
+            - name: FILESYSTEM_DISK
+              value: "local"
+            - name: PUBLIC_FILESYSTEM_DISK
+              value: "public"
+            - name: LOG_CHANNEL
+              value: "stderr"
+            - name: LOG_LEVEL
+              value: "info"
+            - name: DB_CONNECTION
+              value: "pgsql"
+            - name: DB_HOST
+              value: "solidtime-db"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_DATABASE
+              value: "solidtime"
+            - name: DB_USERNAME
+              value: "solidtime"
+            - name: DB_SSLMODE
+              value: "prefer"
+          envFrom:
+            - secretRef:
+                name: solidtime-credentials
+          livenessProbe:
+            httpGet:
+              path: /health-check/up
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /health-check/up
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          volumeMounts:
+            - name: solidtime-storage
+              mountPath: /var/www/html/storage/app
+      volumes:
+        - name: solidtime-storage
+          persistentVolumeClaim:
+            claimName: solidtime-storage-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: solidtime-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: solidtime-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: solidtime-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: "solidtime"
+            - name: POSTGRES_USER
+              value: "solidtime"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: solidtime-credentials
+                  key: POSTGRES_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - solidtime
+                - -d
+                - solidtime
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - solidtime
+                - -d
+                - solidtime
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: solidtime-db-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: solidtime-db-data
+          persistentVolumeClaim:
+            claimName: solidtime-db-pvc
