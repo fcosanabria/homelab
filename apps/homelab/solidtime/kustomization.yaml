@@ -5,5 +5,4 @@ resources:
   - ../../base/solidtime/
   - credentials.yaml
   - cloudflare.yaml
-  # Descomentar una vez creado y encriptado tunnel-credentials.yaml:
-  # - tunnel-credentials.yaml
+  - tunnel-credentials.yaml
